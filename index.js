@@ -20,12 +20,19 @@ server.use(
      date: String! 
     }
 
+    input EventInput {
+      title: String!
+      description: String!
+      price: Float!
+      date: String!
+    }
+
     type RootQuery {
       events: [Event!]!
     }
 
     type RootMutation {
-      createEvent(name: String): Event
+      createEvent(eventInput: EventInput): Event
     }
 
     schema {
