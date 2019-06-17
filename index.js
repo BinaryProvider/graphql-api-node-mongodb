@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 5000;
 
 const server = express();
 
+const events = [];
+
 server.use(bodyParser.json());
 
 server.use(
@@ -42,11 +44,18 @@ server.use(
   `),
     rootValue: {
       events: () => {
-        return [`Romantic Cooking`, 'Sailing', 'All-Night Coding'];
+        return events;
       },
       createEvent: args => {
-        const eventName = args.name;
-        return eventName;
+        const event = {
+          _id: Math.random().toString(),
+          title: args.eventInput.title,
+          description: args.eventInput.description,
+          price: +args.eventInput.price,
+          date: args.eventInput.date
+        };
+        events.push(event);
+        return event;
       }
     },
     graphiql: true
