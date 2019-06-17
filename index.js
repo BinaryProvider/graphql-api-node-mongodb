@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
 const graphql = require('graphql');
+const mongoose = require('mongoose');
 const PORT = process.env.PORT || 5000;
 
 const server = express();
@@ -66,6 +67,17 @@ server.get('/', (request, response, next) => {
   response.send('Server up and running');
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+mongoose
+  .connect(
+    `mongodb+srv://${process.env.MONGO_USER}:${
+      process.env.MONGO_PASSWORD
+    }@graphql-cluster-omvn0.mongodb.net/test?retryWrites=true&w=majority`
+  )
+  .then(() => {
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  });
