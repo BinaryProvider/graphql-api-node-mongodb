@@ -3,11 +3,12 @@ const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
 const graphql = require('graphql');
 const mongoose = require('mongoose');
+
+const Event = require('./models/event');
+
 const PORT = process.env.PORT || 5000;
 
 const server = express();
-
-const events = [];
 
 server.use(bodyParser.json());
 
@@ -48,15 +49,31 @@ server.use(
         return events;
       },
       createEvent: args => {
-        const event = {
-          _id: Math.random().toString(),
+        // const event = {
+        //   _id: Math.random().toString(),
+        //   title: args.eventInput.title,
+        //   description: args.eventInput.description,
+        //   price: +args.eventInput.price,
+        //   date: args.eventInput.date
+        // };
+        const event = new Event({
           title: args.eventInput.title,
           description: args.eventInput.description,
           price: +args.eventInput.price,
-          date: args.eventInput.date
-        };
-        events.push(event);
-        return event;
+          date: new Date(args.eventInput.date)
+        });
+
+        event
+          .save()
+          .then(result => {
+            console.log(result);
+            return { ...result._doc };
+            //.doc leaves all meta data out
+          })
+          .catch(err => {
+            console.log(err);
+            throw err;
+          });
       }
     },
     graphiql: true
@@ -71,7 +88,7 @@ mongoose
   .connect(
     `mongodb+srv://${process.env.MONGO_USER}:${
       process.env.MONGO_PASSWORD
-    }@graphql-cluster-omvn0.mongodb.net/test?retryWrites=true&w=majority`
+    }@graphql-cluster-omvn0.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`
   )
   .then(() => {
     server.listen(PORT, () => {
