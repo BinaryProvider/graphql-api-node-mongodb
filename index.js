@@ -12,12 +12,20 @@ server.use(
   '/api',
   graphqlHttp({
     schema: graphql.buildSchema(`
+    type Event {
+     _id: ID!
+     title: String!
+     description: String!
+     price: Float!
+     date: String! 
+    }
+
     type RootQuery {
-      events: [String!]!
+      events: [Event!]!
     }
 
     type RootMutation {
-      createEvent(name: String): String
+      createEvent(name: String): Event
     }
 
     schema {
