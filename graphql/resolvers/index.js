@@ -10,6 +10,7 @@ const events = eventIds => {
         return {
           ...event._doc,
           _id: event.id,
+          date: new Date(event._doc.date).toISOString(),
           creator: user.bind(this, event.creator)
         };
       });
@@ -38,7 +39,12 @@ module.exports = {
     return Event.find()
       .then(events => {
         return events.map(event => {
-          return { ...event._doc, _id: event.id, creator: user.bind(this, event._doc.creator) };
+          return {
+            ...event._doc,
+            _id: event.id,
+            date: new Date(event._doc.date).toISOString(),
+            creator: user.bind(this, event._doc.creator)
+          };
         });
       })
       .catch(err => {
@@ -57,7 +63,11 @@ module.exports = {
     return event
       .save()
       .then(result => {
-        createdEvent = { ...result._doc, creator: user.bind(this, result._doc.creator) };
+        createdEvent = {
+          ...result._doc,
+          date: new Date(event._doc.date).toISOString(),
+          creator: user.bind(this, result._doc.creator)
+        };
         return User.findById('5d084afd0de35c4dc88fda69');
       })
       .then(user => {
