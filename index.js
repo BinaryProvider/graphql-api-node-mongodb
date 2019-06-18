@@ -14,6 +14,16 @@ const server = express();
 
 server.use(bodyParser.json());
 
+const user = userId => {
+  return User.findById(userId)
+    .then(user => {
+      return { ...user._doc, _id: user.id };
+    })
+    .catch(err => {
+      throw err;
+    });
+};
+
 server.use(
   '/api',
   graphqlHttp({
@@ -24,12 +34,14 @@ server.use(
      description: String!
      price: Float!
      date: String! 
+     creator: User!
     }
 
     type User {
       _id: ID!
       email: String!
       password: String
+      createdEvents: [Event!]
     }
 
     input EventInput {
@@ -63,7 +75,7 @@ server.use(
         return Event.find()
           .then(events => {
             return events.map(event => {
-              return { ...event._doc };
+              return { ...event._doc, _id: event.id, creator: user.bind(this, event._doc.creator) };
             });
           })
           .catch(err => {
