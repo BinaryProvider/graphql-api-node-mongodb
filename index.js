@@ -14,10 +14,30 @@ const server = express();
 
 server.use(bodyParser.json());
 
+const events = eventIds => {
+  return Event.find({ _id: { $in: eventIds } })
+    .then(events => {
+      return events.map(event => {
+        return {
+          ...event._doc,
+          _id: event.id,
+          creator: user.bind(this, event.creator)
+        };
+      });
+    })
+    .catch(err => {
+      throw err;
+    });
+};
+
 const user = userId => {
   return User.findById(userId)
     .then(user => {
-      return { ...user._doc, _id: user.id };
+      return {
+        ...user._doc,
+        _id: user.id,
+        createdEvents: events.bind(this, user._doc.createdEvents)
+      };
     })
     .catch(err => {
       throw err;
@@ -94,7 +114,7 @@ server.use(
         return event
           .save()
           .then(result => {
-            createdEvent = { ...result._doc };
+            createdEvent = { ...result._doc, creator: user.bind(this, result._doc.creator) };
             return User.findById('5d084afd0de35c4dc88fda69');
           })
           .then(user => {
