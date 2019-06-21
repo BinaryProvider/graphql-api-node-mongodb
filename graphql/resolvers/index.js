@@ -4,11 +4,13 @@ const Event = require('../../models/event');
 const User = require('../../models/user');
 const Booking = require('../../models/booking');
 
+const { dateToString } = require('../../helpers/date');
+
 const transformEvent = event => {
   return {
     ...event._doc,
     _id: event.id,
-    date: new Date(event._doc.date).toISOString(),
+    date: dateToString(event._doc.date),
     creator: user.bind(this, event.creator)
   };
 };
@@ -66,8 +68,8 @@ module.exports = {
           _id: booking.id,
           user: user.bind(this, booking._doc.user),
           event: singleEvent.bind(this, booking._doc.event),
-          createdAt: new Date(booking._doc.createdAt).toISOString(),
-          createdAt: new Date(booking._doc.updatedAt).toISOString()
+          createdAt: dateToString(booking._doc.createdAt),
+          createdAt: dateToString(booking._doc.updatedAt)
         };
       });
     } catch (err) {
@@ -79,7 +81,7 @@ module.exports = {
       title: args.eventInput.title,
       description: args.eventInput.description,
       price: +args.eventInput.price,
-      date: new Date(args.eventInput.date),
+      date: dateToString(args.eventInput.date),
       creator: '5d09415c58bbc362d62e710d'
     });
 
@@ -90,7 +92,7 @@ module.exports = {
 
       createdEvent = {
         ...result._doc,
-        date: new Date(event._doc.date).toISOString(),
+        date: dateToString(event._doc.date),
         creator: user.bind(this, result._doc.creator)
       };
 
@@ -140,8 +142,8 @@ module.exports = {
       _id: result.id,
       user: user.bind(this, booking._doc.user),
       event: singleEvent.bind(this, booking._doc.event),
-      createdAt: new Date(booking._doc.createdAt).toISOString(),
-      createdAt: new Date(booking._doc.updatedAt).toISOString()
+      createdAt: dateToString(booking._doc.createdAt),
+      createdAt: dateToString(booking._doc.updatedAt)
     };
   },
   cancelBooking: async args => {
