@@ -22,7 +22,7 @@ module.exports = (request, response, next) => {
     request.isAuth = false;
     return next();
   }
-  req.isAuth = true;
-  req.userId = decodedToken.userId;
+  request.isAuth = true;
+  request.userId = decodedToken.userId;
   next();
 };
