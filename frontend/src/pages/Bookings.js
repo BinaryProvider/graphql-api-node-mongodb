@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function AuthPage() {
+export default function BookingsPage() {
   return (
     <div>
-      Authpage
+      bookings
     </div>
   )
 }

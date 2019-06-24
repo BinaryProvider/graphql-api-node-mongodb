@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function AuthPage() {
+export default function EventsPage() {
   return (
     <div>
-      Authpage
+      events
     </div>
   )
 }
