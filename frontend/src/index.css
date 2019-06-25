@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+.main_content {
+  margin: 4rem 2.5rem;
+}
+
 .main_navigation {
   position: fixed;
   left: 0;
@@ -42,6 +46,7 @@ body {
 }
 
 .main_navigation__items a:hover,
-.main_navigation__items a:active {
+.main_navigation__items a:active,
+.main_navigation__items a.active {
   color: #f8e264;
 }

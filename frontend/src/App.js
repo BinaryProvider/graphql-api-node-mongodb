@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <>
         <MainNavigation />
-        <main>
+        <main className="main_content">
           <Switch>
             <Redirect from='/' to='/auth' exact />
             <Route path='/auth' component={AuthPage} />
