@@ -3,11 +3,11 @@ import { NavLink } from 'react-router-dom';
 
 export default function MainNavigation(props) {
   return (
-    <header>
+    <header className="main_navigation">
       <div className='main_navigation__logo'>
         <h1>EasyEvent</h1>
       </div>
-      <nav className='main_navigation__item'>
+      <nav className='main_navigation__items'>
         <ul>
           <li>
             <NavLink to='/auth'>Authenticate</NavLink>
