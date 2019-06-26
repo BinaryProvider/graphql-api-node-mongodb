@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import AuthContext from '../context/auth-context';
 
 export default class Auth extends Component {
   state = {
     isLogin: true
   };
+
+  static contextType = AuthContext;
 
   constructor(props) {
     super(props);
