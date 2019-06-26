@@ -69,6 +69,13 @@ export default class Auth extends Component {
       })
       .then(responseData => {
         console.log(responseData);
+        if (responseData.data.login.token) {
+          this.context.login(
+            responseData.data.login.token,
+            responseData.data.login.userId,
+            responseData.data.login.tokenExpiration
+          );
+        }
       })
       .catch(err => {
         console.log(err);
