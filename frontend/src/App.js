@@ -27,7 +27,7 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <>
-          <AuthContext
+          <AuthContext.Provider
             value={{
               token: this.state.token,
               userId: this.state.userId,
@@ -38,13 +38,15 @@ export default class App extends Component {
             <MainNavigation />
             <main className='main_content'>
               <Switch>
-                <Redirect from='/' to='/auth' exact />
-                <Route path='/auth' component={AuthPage} />
+                {!this.state.token && <Redirect from='/' to='/auth' exact />}
+                {this.state.token && <Redirect from='/' to='/events' exact />}
+                {this.state.token && <Redirect from='/auth' to='/events' exact />}
+                {!this.state.token && <Route path='/auth' component={AuthPage} />}
                 <Route path='/events' component={EventsPage} />
-                <Route path='/bookings' component={BookingsPage} />
+                {this.state.token && <Route path='/bookings' component={BookingsPage} />}
               </Switch>
             </main>
-          </AuthContext>
+          </AuthContext.Provider>
         </>
       </BrowserRouter>
     );
