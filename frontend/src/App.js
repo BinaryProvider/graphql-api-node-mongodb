@@ -19,7 +19,9 @@ export default class App extends Component {
     this.setState({ token: token, userId: userId });
   };
 
-  logout = () => {};
+  logout = () => {
+    this.setState({ token: null, userId: null });
+  };
 
   render() {
     return (
