@@ -10,11 +10,29 @@ import BookingsPage from './pages/Bookings';
 import AuthContext from './context/auth-context';
 
 export default class App extends Component {
+  state = {
+    token: null,
+    userId: null
+  };
+
+  login = (token, userId, tokenExpiration) => {
+    this.setState({ token: token, userId: userId });
+  };
+
+  logout = () => {};
+
   render() {
     return (
       <BrowserRouter>
         <>
-          <AuthContext value={{ token: null, userId: null }}>
+          <AuthContext
+            value={{
+              token: this.state.token,
+              userId: this.state.userId,
+              login: this.login,
+              logout: this.logout
+            }}
+          >
             <MainNavigation />
             <main className='main_content'>
               <Switch>
