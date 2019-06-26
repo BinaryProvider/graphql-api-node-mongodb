@@ -88,3 +88,18 @@ body {
   background: #01a7a7;
   border-color: #01a7a7;
 }
+
+.modal {
+  width: 90%;
+  background: #ccc;
+  position: fixed;
+  top: 20vh;
+  left: 5%;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    width: 30rem;
+    left: calc((100% - 30rem) / 2);
+  }
+}
