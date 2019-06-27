@@ -23,7 +23,7 @@ export default class Events extends Component {
   modalConfirmHandler = () => {
     this.setState({ creating: false });
     const title = this.titleElRef.current.value;
-    const price = this.priceElRef.current.value;
+    const price = +this.priceElRef.current.value;
     const date = this.dateElRef.current.value;
     const description = this.descriptionElRef.current.value;
 
@@ -37,7 +37,57 @@ export default class Events extends Component {
     }
 
     const event = { title, price, date, description };
-    console.log(event);
+
+    const requestBody = {
+      query: `
+          mutation {
+            createEvent(eventInput: {
+              title: "${title}", 
+              description: "${description}",
+              date: "${date}",
+              price: ${price}
+            }) 
+            {
+              _id
+              title
+              description
+              date
+              price
+              creator {
+                _id
+                email
+              }
+            }
+          }
+        `
+    };
+
+    fetch('http://localhost:5000/api', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        if (response.status !== 200 && response.status !== 201) {
+          throw new Error('Failed');
+        }
+        return response.json();
+      })
+      .then(responseData => {
+        console.log(responseData);
+        if (responseData.data.login.token) {
+          this.context.login(
+            responseData.data.login.token,
+            responseData.data.login.userId,
+            responseData.data.login.tokenExpiration
+          );
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   modalCancelHandler = () => {
@@ -67,7 +117,7 @@ export default class Events extends Component {
               </div>
               <div>
                 <label htmlFor='date'>Date</label>
-                <input type='date' id='date' ref={this.dateElRef} />
+                <input type='datetime-local' id='date' ref={this.dateElRef} />
               </div>
               <div>
                 <label htmlFor='description'>Description</label>
