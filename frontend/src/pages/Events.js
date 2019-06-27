@@ -81,16 +81,16 @@ export default class Events extends Component {
         Authorization: `Bearer ${token}`
       }
     })
-      .then(response => {
+      .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
           throw new Error('Failed');
         }
         return response.json();
       })
-      .then(responseData => {
+      .then((responseData) => {
         this.fetchEvents();
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
@@ -125,17 +125,17 @@ export default class Events extends Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(response => {
+      .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
           throw new Error('Failed');
         }
         return response.json();
       })
-      .then(responseData => {
+      .then((responseData) => {
         const events = responseData.data.events;
         this.setState({ events: events });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
@@ -146,7 +146,7 @@ export default class Events extends Component {
         {this.state.creating && <Backdrop />}
         {this.state.creating && (
           <Modal
-            title='Add Event'
+            title="Add Event"
             canCancel
             canConfirm
             onCancel={this.modalCancelHandler}
@@ -154,22 +154,22 @@ export default class Events extends Component {
           >
             <form>
               <div>
-                <label htmlFor='title'>Title</label>
-                <input type='text' id='title' ref={this.titleElRef} />
+                <label htmlFor="title">Title</label>
+                <input type="text" id="title" ref={this.titleElRef} />
               </div>
               <div>
-                <label htmlFor='price'>Price</label>
-                <input type='number' id='price' ref={this.priceElRef} />
+                <label htmlFor="price">Price</label>
+                <input type="number" id="price" ref={this.priceElRef} />
               </div>
               <div>
-                <label htmlFor='date'>Date</label>
-                <input type='datetime-local' id='date' ref={this.dateElRef} />
+                <label htmlFor="date">Date</label>
+                <input type="datetime-local" id="date" ref={this.dateElRef} />
               </div>
               <div>
-                <label htmlFor='description'>Description</label>
+                <label htmlFor="description">Description</label>
                 <textarea
-                  id='description'
-                  rows='4'
+                  id="description"
+                  rows="4"
                   ref={this.descriptionElRef}
                 />
               </div>
