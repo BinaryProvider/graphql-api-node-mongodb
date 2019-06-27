@@ -15,6 +15,7 @@ export default class Events extends Component {
   modalConfirmHandler = () => {
     this.setState({ creating: false });
   };
+
   modalCancelHandler = () => {
     this.setState({ creating: false });
   };
@@ -31,7 +32,24 @@ export default class Events extends Component {
             onCancel={this.modalCancelHandler}
             onConfirm={this.modalConfirmHandler}
           >
-            <p>Modal Content</p>
+            <form>
+              <div>
+                <label htmlFor='title'>Title</label>
+                <input type='text' id='title' />
+              </div>
+              <div>
+                <label htmlFor='price'>Price</label>
+                <input type='number' id='price' />
+              </div>
+              <div>
+                <label htmlFor='date'>Date</label>
+                <input type='date' id='date' />
+              </div>
+              <div>
+                <label htmlFor='description'>Description</label>
+                <textarea id='description' rows='4' />
+              </div>
+            </form>
           </Modal>
         )}
         <div>
