@@ -10,7 +10,9 @@ const EventItem = (props) => {
       {props.userId === props.creatorId ? (
         <div>You are the creator</div>
       ) : (
-        <div>view details</div>
+        <button onClick={props.onDetail.bind(this, props.eventId)}>
+          view details
+        </button>
       )}
     </li>
   );

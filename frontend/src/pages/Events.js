@@ -11,6 +11,7 @@ export default class Events extends Component {
   state = {
     creating: false,
     events: [],
+    selectedEvent: null,
   };
 
   static contextType = AuthContext;
@@ -105,7 +106,7 @@ export default class Events extends Component {
   };
 
   modalCancelHandler = () => {
-    this.setState({creating: false});
+    this.setState({creating: false, selectedEvent: null});
   };
 
   fetchEvents() {
@@ -149,6 +150,15 @@ export default class Events extends Component {
       });
   }
 
+  showDetailHandler = (eventId) => {
+    this.setState((prevState) => {
+      const selectedEvent = prevState.events.find((e) => e._id === eventId);
+      return {selectedEvent};
+    });
+  };
+
+  bookEventHandler = () => {};
+
   render() {
     return (
       <>
@@ -160,6 +170,7 @@ export default class Events extends Component {
             canConfirm
             onCancel={this.modalCancelHandler}
             onConfirm={this.modalConfirmHandler}
+            confirmText="Confirm"
           >
             <form>
               <div>
@@ -185,6 +196,22 @@ export default class Events extends Component {
             </form>
           </Modal>
         )}
+        {this.state.selectedEvent && (
+          <Modal
+            title={this.state.selectedEvent.title}
+            canCancel
+            canConfirm
+            onCancel={this.modalCancelHandler}
+            onConfirm={this.bookEventHandler}
+            confirmText="Book"
+          >
+            <h1>{this.state.selectedEvent.title}</h1>
+            <h2>
+              {this.state.selectedEvent.price} - {this.state.selectedEvent.date}
+            </h2>
+            <p>{this.state.selectedEvent.description}</p>
+          </Modal>
+        )}
         <div>
           <button onClick={this.startCreateEventHandler}>Create Event</button>
         </div>
@@ -192,6 +219,7 @@ export default class Events extends Component {
           <EventList
             events={this.state.events}
             authUserId={this.context.userId}
+            onViewDetail={this.showDetailHandler}
           />
         </section>
       </>
