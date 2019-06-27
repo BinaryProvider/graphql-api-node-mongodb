@@ -167,7 +167,11 @@ export default class Events extends Component {
               </div>
               <div>
                 <label htmlFor='description'>Description</label>
-                <textarea id='description' rows='4' ref={this.descriptionElRef} />
+                <textarea
+                  id='description'
+                  rows='4'
+                  ref={this.descriptionElRef}
+                />
               </div>
             </form>
           </Modal>
@@ -176,7 +180,10 @@ export default class Events extends Component {
           <button onClick={this.startCreateEventHandler}>Create Event</button>
         </div>
         <section>
-          <EventList events={this.state.events} authUserId={this.context.userId} />
+          <EventList
+            events={this.state.events}
+            authUserId={this.context.userId}
+          />
         </section>
       </>
     );
