@@ -10,7 +10,7 @@ import EventList from '../components/Events/EventList/EventList';
 export default class Events extends Component {
   state = {
     creating: false,
-    events: []
+    events: [],
   };
 
   static contextType = AuthContext;
@@ -62,13 +62,9 @@ export default class Events extends Component {
               description
               date
               price
-              creator {
-                _id
-                email
-              }
             }
           }
-        `
+        `,
     };
 
     const token = this.context.token;
@@ -78,8 +74,8 @@ export default class Events extends Component {
       body: JSON.stringify(requestBody),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
@@ -88,7 +84,19 @@ export default class Events extends Component {
         return response.json();
       })
       .then((responseData) => {
-        this.fetchEvents();
+        this.setState((prevState) => {
+          const updatedEvents = [...prevState.events];
+          updatedEvents.push({
+            _id: responseData.data.createEvent._id,
+            title: responseData.data.createEvent.title,
+            description: responseData.data.createEvent.description,
+            date: responseData.data.createEvent.date,
+            price: responseData.data.createEvent.price,
+            creator: {
+              _id: this.context.userId,
+            },
+          });
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -115,15 +123,15 @@ export default class Events extends Component {
             }
           }
         }
-      `
+      `,
     };
 
     fetch('http://localhost:5000/api', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
       .then((response) => {
         if (response.status !== 200 && response.status !== 201) {
