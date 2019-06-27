@@ -5,6 +5,8 @@ import Backdrop from '../components/Backdrop/Backdrop';
 
 import AuthContext from '../context/auth-context';
 
+import EventList from '../components/Events/EventList/EventList';
+
 export default class Events extends Component {
   state = {
     creating: false,
@@ -139,10 +141,6 @@ export default class Events extends Component {
   }
 
   render() {
-    const eventList = this.state.events.map(event => {
-      return <li key={event._id}>{event.title}</li>;
-    });
-
     return (
       <>
         {this.state.creating && <Backdrop />}
@@ -178,7 +176,7 @@ export default class Events extends Component {
           <button onClick={this.startCreateEventHandler}>Create Event</button>
         </div>
         <section>
-          <ul>{eventList}</ul>
+          <EventList events={this.state.events} authUserId={this.context.userId} />
         </section>
       </>
     );
