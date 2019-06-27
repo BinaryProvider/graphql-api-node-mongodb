@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import Modal from '../components/Modal/Modal';
 import Backdrop from '../components/Backdrop/Backdrop';
@@ -28,11 +28,11 @@ export default class Events extends Component {
   }
 
   startCreateEventHandler = () => {
-    this.setState({ creating: true });
+    this.setState({creating: true});
   };
 
   modalConfirmHandler = () => {
-    this.setState({ creating: false });
+    this.setState({creating: false});
     const title = this.titleElRef.current.value;
     const price = +this.priceElRef.current.value;
     const date = this.dateElRef.current.value;
@@ -96,6 +96,7 @@ export default class Events extends Component {
               _id: this.context.userId,
             },
           });
+          return {events: updatedEvents};
         });
       })
       .catch((err) => {
@@ -104,7 +105,7 @@ export default class Events extends Component {
   };
 
   modalCancelHandler = () => {
-    this.setState({ creating: false });
+    this.setState({creating: false});
   };
 
   fetchEvents() {
@@ -141,7 +142,7 @@ export default class Events extends Component {
       })
       .then((responseData) => {
         const events = responseData.data.events;
-        this.setState({ events: events });
+        this.setState({events: events});
       })
       .catch((err) => {
         console.log(err);
