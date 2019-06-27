@@ -1,8 +1,8 @@
 import React from 'react';
 import EventItem from './EventItem/EventItem';
 
-const EventList = props => {
-  const eventList = props.events.map(event => {
+const EventList = (props) => {
+  const eventList = props.events.map((event) => {
     return (
       <EventItem
         key={event._id}
@@ -10,6 +10,7 @@ const EventList = props => {
         title={event.title}
         price={event.price}
         userId={props.authUserId}
+        creatorId={event.creator._id}
       />
     );
   });
