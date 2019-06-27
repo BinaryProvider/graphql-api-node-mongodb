@@ -3,10 +3,14 @@ import React, { Component } from 'react';
 import Modal from '../components/Modal/Modal';
 import Backdrop from '../components/Backdrop/Backdrop';
 
+import AuthContext from '../context/auth-context';
+
 export default class Events extends Component {
   state = {
     creating: false
   };
+
+  static contextType = AuthContext;
 
   constructor(props) {
     super(props);
@@ -29,14 +33,12 @@ export default class Events extends Component {
 
     if (
       title.trim().length === 0 ||
-      price.trim().length === 0 ||
+      price <= 0 ||
       date.trim().length === 0 ||
       description.trim().length === 0
     ) {
       return;
     }
-
-    const event = { title, price, date, description };
 
     const requestBody = {
       query: `
@@ -62,11 +64,14 @@ export default class Events extends Component {
         `
     };
 
+    const token = this.context.token;
+
     fetch('http://localhost:5000/api', {
       method: 'POST',
       body: JSON.stringify(requestBody),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
       }
     })
       .then(response => {
@@ -77,13 +82,6 @@ export default class Events extends Component {
       })
       .then(responseData => {
         console.log(responseData);
-        if (responseData.data.login.token) {
-          this.context.login(
-            responseData.data.login.token,
-            responseData.data.login.userId,
-            responseData.data.login.tokenExpiration
-          );
-        }
       })
       .catch(err => {
         console.log(err);
