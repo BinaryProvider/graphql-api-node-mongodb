@@ -7,7 +7,8 @@ import AuthContext from '../context/auth-context';
 
 export default class Events extends Component {
   state = {
-    creating: false
+    creating: false,
+    events: []
   };
 
   static contextType = AuthContext;
@@ -85,7 +86,7 @@ export default class Events extends Component {
         return response.json();
       })
       .then(responseData => {
-        console.log(responseData);
+        this.fetchEvents();
       })
       .catch(err => {
         console.log(err);
@@ -129,7 +130,8 @@ export default class Events extends Component {
         return response.json();
       })
       .then(responseData => {
-        console.log(responseData);
+        const events = responseData.data.events;
+        this.setState({ events: events });
       })
       .catch(err => {
         console.log(err);
@@ -137,6 +139,10 @@ export default class Events extends Component {
   }
 
   render() {
+    const eventList = this.state.events.map(event => {
+      return <li key={event._id}>{event.title}</li>;
+    });
+
     return (
       <>
         {this.state.creating && <Backdrop />}
@@ -172,9 +178,7 @@ export default class Events extends Component {
           <button onClick={this.startCreateEventHandler}>Create Event</button>
         </div>
         <section>
-          <ul>
-            <li>event</li>
-          </ul>
+          <ul>{eventList}</ul>
         </section>
       </>
     );
