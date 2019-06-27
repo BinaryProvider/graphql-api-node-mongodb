@@ -20,6 +20,10 @@ export default class Events extends Component {
     this.descriptionElRef = React.createRef();
   }
 
+  componentDidMount() {
+    this.fetchEvents();
+  }
+
   startCreateEventHandler = () => {
     this.setState({ creating: true });
   };
@@ -92,6 +96,46 @@ export default class Events extends Component {
     this.setState({ creating: false });
   };
 
+  fetchEvents() {
+    const requestBody = {
+      query: `
+        query {
+          events {
+            _id
+            title
+            description
+            date
+            price
+            creator {
+              _id
+              email
+            }
+          }
+        }
+      `
+    };
+
+    fetch('http://localhost:5000/api', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        if (response.status !== 200 && response.status !== 201) {
+          throw new Error('Failed');
+        }
+        return response.json();
+      })
+      .then(responseData => {
+        console.log(responseData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
   render() {
     return (
       <>
@@ -127,6 +171,11 @@ export default class Events extends Component {
         <div>
           <button onClick={this.startCreateEventHandler}>Create Event</button>
         </div>
+        <section>
+          <ul>
+            <li>event</li>
+          </ul>
+        </section>
       </>
     );
   }
