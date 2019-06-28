@@ -14,6 +14,8 @@ export default class Events extends Component {
     selectedEvent: null,
   };
 
+  isActive = true;
+
   static contextType = AuthContext;
 
   constructor(props) {
@@ -143,7 +145,9 @@ export default class Events extends Component {
       })
       .then((responseData) => {
         const events = responseData.data.events;
-        this.setState({events: events});
+        if (this.isActive) {
+          this.setState({events: events});
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -196,6 +200,10 @@ export default class Events extends Component {
         console.log(err);
       });
   };
+
+  componentWillUnmount() {
+    this.isActive = false;
+  }
 
   render() {
     return (
