@@ -157,7 +157,45 @@ export default class Events extends Component {
     });
   };
 
-  bookEventHandler = () => {};
+  bookEventHandler = () => {
+    if (!this.context.token) {
+      this.setState({selectedEvent: null});
+      return;
+    }
+    const requestBody = {
+      query: `
+          mutation {
+            bookEvent(eventId: "${this.state.selectedEvent._id}") {
+              _id
+              createdAt
+              updatedAt
+            }
+          }
+        `,
+    };
+
+    fetch('http://localhost:5000/api', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.context.token}`,
+      },
+    })
+      .then((response) => {
+        if (response.status !== 200 && response.status !== 201) {
+          throw new Error('Failed');
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        console.log(responseData);
+        this.setState({selectedEvent: null});
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   render() {
     return (
@@ -203,7 +241,7 @@ export default class Events extends Component {
             canConfirm
             onCancel={this.modalCancelHandler}
             onConfirm={this.bookEventHandler}
-            confirmText="Book"
+            confirmText={this.context.token ? 'Book' : 'Confirm'}
           >
             <h1>{this.state.selectedEvent.title}</h1>
             <h2>
