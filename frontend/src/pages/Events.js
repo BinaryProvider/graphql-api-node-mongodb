@@ -52,12 +52,12 @@ export default class Events extends Component {
 
     const requestBody = {
       query: `
-          mutation {
+          mutation CreateEvent($title: String!, $description: String!, $price: Float!, $date: String!){
             createEvent(eventInput: {
-              title: "${title}", 
-              description: "${description}",
-              date: "${date}",
-              price: ${price}
+              title: $title, 
+              description: $description,
+              date: $date,
+              price: $price
             }) 
             {
               _id
@@ -68,6 +68,12 @@ export default class Events extends Component {
             }
           }
         `,
+      variables: {
+        title,
+        price,
+        date,
+        description,
+      },
     };
 
     const token = this.context.token;
