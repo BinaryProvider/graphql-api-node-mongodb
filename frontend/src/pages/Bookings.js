@@ -53,7 +53,51 @@ export default class Bookings extends Component {
       });
   };
 
+  deleteBookingHandler = (bookingId) => {
+    const requestBody = {
+      query: `
+        mutation {
+          cancelBooking(bookingId: "${bookingId}") {
+            _id
+            title
+          }
+        }
+      `,
+    };
+
+    fetch('http://localhost:5000/api', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.context.token}`,
+      },
+    })
+      .then((response) => {
+        if (response.status !== 200 && response.status !== 201) {
+          throw new Error('Failed');
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        this.setState((prevState) => {
+          const updatedBookings = prevState.bookings.filter((booking) => {
+            return booking._id !== bookingId;
+          });
+          return {bookings: updatedBookings, isLoading: false};
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   render() {
-    return <BookingList bookings={this.state.bookings} />;
+    return (
+      <BookingList
+        bookings={this.state.bookings}
+        onDelete={this.deleteBookingHandler}
+      />
+    );
   }
 }
