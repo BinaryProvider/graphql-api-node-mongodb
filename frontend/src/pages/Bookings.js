@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import AuthContext from '../context/auth-context';
+import BookingList from '../components/Bookings/BookingList/BookingList';
 
 export default class Bookings extends Component {
   state = {
@@ -53,14 +54,6 @@ export default class Bookings extends Component {
   };
 
   render() {
-    return (
-      <ul>
-        {this.state.bookings.map((booking) => (
-          <li key={booking._id}>
-            {booking.event.title} - {booking.createdAt}
-          </li>
-        ))}
-      </ul>
-    );
+    return <BookingList bookings={this.state.bookings} />;
   }
 }
