@@ -52,7 +52,7 @@ export default class Events extends Component {
 
     const requestBody = {
       query: `
-          mutation CreateEvent($title: String!, $description: String!, $price: Float!, $date: String!){
+          mutation CreateEvent($title: String!, $description: String!, $price: Float!, $date: String!) {
             createEvent(eventInput: {
               title: $title, 
               description: $description,
@@ -174,14 +174,17 @@ export default class Events extends Component {
     }
     const requestBody = {
       query: `
-          mutation {
-            bookEvent(eventId: "${this.state.selectedEvent._id}") {
+          mutation BookEvent($id: ID!) {
+            bookEvent(eventId: $id) {
               _id
               createdAt
               updatedAt
             }
           }
         `,
+      variables: {
+        id: this.state.selectedEvent._id,
+      },
     };
 
     fetch('http://localhost:5000/api', {
